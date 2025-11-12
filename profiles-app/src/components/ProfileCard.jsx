@@ -1,11 +1,20 @@
+// Inside ProfileCard.jsx
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-export default function ProfileCard({ name, likes }) {
+// Make sure to accept the new props: id and onLike
+export default function ProfileCard({ id, name, likes, onLike }) {
   return (
-    <Card className="mb-3 shadow-sm">
+    <Card className="mb-4">
       <Card.Body>
-        <Card.Title className="h5 mb-1">{name}</Card.Title>
-        <Card.Text className="mb-0">Likes: {likes}</Card.Text>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>
+          Likes: {likes}
+        </Card.Text>
+        {/* Add the button and call onLike with the id */}
+        <Button variant="primary" onClick={() => onLike(id)}>
+          Like
+        </Button>
       </Card.Body>
     </Card>
   );
