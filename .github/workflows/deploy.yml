@@ -19,15 +19,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
-      - run: npm run build
+          # specific path is needed since lockfile is not in root
+          cache-dependency-path: ./profiles-app/package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: ./profiles-app  # <--- FIX 1: Tells it where to run install
+
+      - name: Build Project
+        run: npm run build
+        working-directory: ./profiles-app  # <--- FIX 2: Tells it where to run build
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          # <--- FIX 3: Points to the actual dist folder inside the subfolder
+          path: ./profiles-app/dist 
 
   deploy:
     needs: build
